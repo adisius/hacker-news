@@ -1,0 +1,84 @@
+.card{
+    display: flex;
+    align-items: center;
+    height: 5.625rem;
+    background-color: #ffffff;
+    border: 1px solid #979797;
+    border-radius: 6px;
+    padding-left: 1.625rem;
+    justify-content: space-between;
+    margin-bottom: 1.875rem;
+    margin-right: 2.25rem;
+    width: calc(45% - 2.25rem);
+    float: left;
+    transition: 0.4s all;
+  }
+
+  .card:hover{
+    opacity:0.6
+  }
+  
+  .card.disabled{
+    opacity:0.4;
+  }
+  
+  .card-header{
+    padding-right:1.875rem;
+    position: relative;
+  }
+
+  .card-header a{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    content: "";
+    width: 100%;
+    height: 100%;
+  }
+  
+  .card-header .info{
+    font-size: 0.668rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .card-header .info img{
+    margin-right: .5rem;
+  }
+  
+  
+  .card-fav{
+    min-width: 4.25rem;
+    height: 100%;
+    background-color: rgba(96, 96, 96, 0.06);
+  }
+  .card-fav button{
+    height: 100%;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .card-fav button img{
+    transition: 0.4s all;
+    margin: 0 auto;
+  }
+  
+  .card-fav button:hover img{
+    transform: scale(1.2)
+  }
+  
+  .card-fav button img.outline{
+    display: block;
+  }
+  
+  .card-fav button img.filled{
+    display: none;
+  }
+  
+  .card.fav .card-fav button img.filled{ display: block; }
+  .card.fav .card-fav button img.outline{ display: none; }
