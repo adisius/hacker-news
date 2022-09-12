@@ -21,7 +21,7 @@ export default function Card(props){
           <div className="card-header">
             <div className="info"><img src="/img/clock.svg" alt="Time" /> {timeDiff} hour{timeDiff === 1 ? '' : 's'} ago by {props.news.author}</div>
             <h3>{props.news.story_title}</h3>
-            <a href={props.news.story_url}  target="_blank" rel="noreferrer">&nsbp;</a>
+            <a href={props.news.story_url}  target="_blank" rel="noreferrer">&nbsp;</a>
           </div>
           <div className="card-fav">
             {/* this could be done better... */}
