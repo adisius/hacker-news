@@ -95,10 +95,10 @@ export default function App() {
 
   //Handling first load
   useEffect(() => {
-    if(firstLoad){
-      fetchData('angular', 0, false);
-      setFirstLoad(false);
-    }
+    if(!firstLoad) return
+    fetchData('angular', 0, false);
+    setFirstLoad(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firstLoad])
 
   if(firstLoad) return <h1>Loading...</h1>
