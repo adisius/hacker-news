@@ -1,4 +1,4 @@
-import {useRef, useState, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import Page from './Components/Page';
 import './App.css';
 
@@ -36,7 +36,7 @@ export default function App() {
   // Handling category change from select
   const handleChange = (value) => {
     setCategory(value);
-    fetchData(value, 0);
+    fetchData(value, 0, false);
   }
 
   // loading next pages
@@ -48,7 +48,7 @@ export default function App() {
 
   const toggleFav = id => {
     let favs = JSON.parse(localStorage.getItem('favs')) || []
-    if(favs.find(value => value == id)){
+    if(favs.find(value => value === id)){
       favs = favs.filter(function(item) {
         return item !== id
       })
@@ -96,7 +96,7 @@ export default function App() {
   //Handling first load
   useEffect(() => {
     if(firstLoad){
-      fetchData('angular', 0);
+      fetchData('angular', 0, false);
       setFirstLoad(false);
     }
   }, [firstLoad])

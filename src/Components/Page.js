@@ -12,6 +12,7 @@ export default function Page(props){
             if(singleNews.author && singleNews.story_title && singleNews.story_url && singleNews.created_at){
                 return <Card key={singleNews.objectID} news={singleNews} fav={false} toggleFav={props.toggleFav} />
             }
+            return false;
           })
         )
     }
