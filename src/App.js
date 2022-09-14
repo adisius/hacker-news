@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import Page from './Components/Page';
 import Select from './Components/Select';
 import './App.css';
@@ -7,7 +7,9 @@ export default function App() {
 
   //Settings de states
   let n = 1;
-  const [category, setCategory] = useState(localStorage.getItem('category') || 'angular'); // Category
+  const [firstLoad, setFirstLoad] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [category, setCategory] = useState(localStorage.getItem('category') || ''); // Category
   const [page, setPage] = useState(0) // Current page number
   const [error, setError] = useState() // Error on fetching
   const [pages, setPages] = useState([]) // For storing pages news data
@@ -52,6 +54,7 @@ export default function App() {
 
   //Data fetching, checking if is new data or for appending it
   const fetchData = async (subject, page, append) => {
+    setIsLoading(true);
     fetch(`https://hn.algolia.com/api/v1/search_by_date?query=${subject}&page=${page}`) //
       .then((response) => response.json())
       .then(async (data) => {
@@ -61,19 +64,43 @@ export default function App() {
           ? tempObject = [...pages, hits]
           : tempObject = [hits];
           setPages(tempObject);
+          setIsLoading(false);
       })
       .catch(error => {
         setError(error);
+        setIsLoading(false);
       })
   }
 
   // Infinte load scroll
   window.onscroll = function() {
     const offset = 100;
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - offset) {
+    if (!isLoading && ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - offset))) {
       nextPage();
     }
   };
+
+  //Handling first load
+  useEffect(() => {
+    const category = localStorage.getItem('category');
+
+    if(!category) return
+    setIsLoading(true);
+    fetch(`https://hn.algolia.com/api/v1/search_by_date?query=${category}&page=0`)
+      .then((response) => response.json())
+      .then(async (data) => {
+          const hits = data.hits;
+          let tempObject = [];
+          tempObject = [hits];
+          setPages(tempObject);
+          setIsLoading(false);
+      })
+      .catch(error => {
+        setError(error);
+        setIsLoading(false);
+      })
+    setFirstLoad(false);
+  }, [firstLoad])
   
   if(error) return <h2>Error...</h2>
 
@@ -91,7 +118,7 @@ export default function App() {
       </section>
 
       <section id="selector">
-        <Select handleChange={handleChange}/>
+        <Select handleChange={handleChange} category={category}/>
       </section>
 
       <section id="news">

@@ -3,8 +3,7 @@ import '../Select.css';
 
 export default function Select(props){
 
-    const [firstLoad, setFirstLoad] = useState(true)
-    
+    const [firstLoad, setFirstLoad] = useState(true);
 
     useEffect(() => {
         if(!firstLoad) return
@@ -14,24 +13,15 @@ export default function Select(props){
         
         options.forEach((option) => {
             const category = option.getAttribute("data-category");
-            console.count(category)
             option.addEventListener('click', () => {
                 props.handleChange(category);
                 label.textContent = option.textContent;
             })
         })
+        console.log(props.category)
+        label.textContent = (props.category === "angular" ? "Angular" : (props.category === "react" ? "React" : (props.category === "vuejs" ? "Vuejs" : 'Select your news')))
     
-        document.addEventListener('click', (e) => {
-            const toggle = document.querySelector('.dropdown.switch')
-            const element = e.target
-            if (element === toggle) return;
-    
-            const isDropdownChild = element.closest('.filter')		
-    
-            if (!isDropdownChild) {
-                toggle.checked = false;
-            }
-        })
+        
         setFirstLoad(false)
 
     },[firstLoad, props])
