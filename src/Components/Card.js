@@ -38,7 +38,8 @@ export default function Card(props){
     }
 
     useEffect(() => {
-      setFav(props.news.objectID);
+      const favs = localStorage.getItem('favs');
+      if(favs) setFav(props.news.objectID);
     })
 
     return(
