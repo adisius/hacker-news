@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+  background-color: #fcfcfc;
+  overflow-x:hidden
+}
+
+a{
+  color:#606060;
+  text-decoration: none;
+}
+
+main {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+section, 
+.row{
+  width: 90vw;
+}
+
+.row{
+  margin:1.875rem auto;
+  text-align: center;
+
+}
+
+section{
+  margin-left:auto;
+  margin-right: auto;
+}
+
+section#tabs{
+  display: flex;
+  justify-content: center;
+  margin: 1.875rem auto;
+}
+
+section#tabs ul {
+    padding: 0;
+}
+
+section#tabs ul li{
+  display: inline;
+  list-style: none;
+}
+
+section#tabs ul li button{
+  font-size: 1rem;
+  width:6.125rem;
+  height: 1.938rem;
+  color:#606060;
+  border:1px solid #d6d6d6;
+  border-radius: 2px;
+  background-color: #fbfbfb;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+section#selector{
+  margin-top:1.875rem; 
+  margin-bottom:1.875rem;
+}
+
+section#selector select{
+  width: 15rem;
+  height: 2rem;
+  border: 1px solid #2e2e2e;
+  border-radius: 2px;
+  padding:0.313rem 0 0.313rem 0.75rem;
+  color: black;
+  background-color: #fff;
+}
+
+button.active{
+  color: #1797ff !important;
+  border-color: #1797ff !important;
+}
+
+header{
+  display: flex;
+  align-items: center;
+  padding:0 10%;
+  height: 7.125rem;
+  box-shadow: 0 1px 4px 0 rgba(0, 21, 41, 0.12);
+  background-image: linear-gradient(to bottom, #ececec -32%, #fff 124%);
+
+}
+ 
+h1{
+  font-family: 'Baskerville', serif;
+  font-weight: 400;
+  font-size: 1.75rem;
+  line-height: 1.75rem;
+  color: #3b3b3b;
+  text-transform: uppercase;
+}
+
+h3{
+  font-weight: 500;
+  font-size: 0.875rem;
+  margin-top: 0.438rem;
+  margin-bottom: 0;
+}
+
+.d-none{ display: none!important;}
+
+
+@media (min-width: 576px) { 
+  
+}
+
+@media (min-width: 768px) { 
+
+}
+
+@media (min-width: 992px) { 
+  section, 
+  .row{
+    width: 80vw;
+  }
+}
+
+@media (min-width: 1200px) { 
+  
+}
+
+@media (min-width: 1400px) { 
+  
+}

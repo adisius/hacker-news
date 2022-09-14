@@ -7,10 +7,10 @@ export default function Page(props){
     <>
     {
         news && (
-            //Mapping through valid news, creating component for each one
+          //Mapping through valid news, creating component for each one
           news.map(function(singleNews, i){
             if(singleNews.author && singleNews.story_title && singleNews.story_url && singleNews.created_at){
-                return <Card key={singleNews.objectID} news={singleNews} fav={false} toggleFav={props.toggleFav} />
+                return <Card key={singleNews.objectID} news={singleNews} fav={false}  />
             }
             return false;
           })

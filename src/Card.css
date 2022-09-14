@@ -8,11 +8,11 @@
     padding-left: 1.625rem;
     justify-content: space-between;
     margin-bottom: 1.875rem;
-    margin-right: 2.25rem;
-    width: calc(45% - 2.25rem);
+    margin-right: 0;
+    width: 90%;
     float: left;
     transition: 0.4s all;
-  }
+  } 
 
   .card:hover{
     opacity:0.6
@@ -82,3 +82,26 @@
   
   .card.fav .card-fav button img.filled{ display: block; }
   .card.fav .card-fav button img.outline{ display: none; }
+
+  @media (min-width: 576px) { 
+  
+  }
+  
+  @media (min-width: 768px) { 
+    .card{
+      width: calc(45% - 2.25rem);
+      margin-right: 2.25rem;
+    }
+    .card:nth-child(even){
+      /* margin-right: 0; */
+    }
+  }
+  
+  @media (min-width: 1200px) { 
+    
+  }
+  
+  @media (min-width: 1400px) { 
+    
+  }
+  

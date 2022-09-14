@@ -1,23 +1,48 @@
 import '../Card.css';
+import { useState, useEffect } from 'react';
 
 export default function Card(props){
 
-    //Converting date to "time ago"
+    //Converting date to relative time
     const nowDate = new Date();
     const newsDate = new Date(props.news.created_at);
     const timeDiff = Math.ceil(Math.abs(nowDate - newsDate) / 36e5);
 
-    let isFav = props.fav;
+    const [isFav, setIsFav] = useState(props.fav);
 
     // Toggling Fav for filtering
     const handleFav = (e) => {
-        isFav = !isFav;
+        setIsFav(!isFav);
         e.target.parentElement.parentElement.parentElement.classList.toggle('fav') // not very elegant, I know =(
-        props.toggleFav(props.news.objectID);
+        toggleFav(props.news.objectID);
     }
 
+    const toggleFav = id => {
+      let favs = JSON.parse(localStorage.getItem('favs')) || []
+      if(favs.find(value => value === id)){
+        favs = favs.filter(function(item) {
+          return item !== id
+        })
+        localStorage.setItem('favs', JSON.stringify(favs));
+      } else {
+        favs.push(id);
+        localStorage.setItem('favs', JSON.stringify(favs));
+      }
+    }
+
+    const setFav = id => { 
+      const idFav = JSON.parse(localStorage.getItem('favs')).find(x => x === id);
+      if(idFav){
+        setIsFav(true);
+      }
+    }
+
+    useEffect(() => {
+      setFav(props.news.objectID);
+    })
+
     return(
-        <div className="card" id={"card-"+props.news.objectID}>
+        <div className={"card" + (isFav ? ' fav' : '')} id={"card-" + props.news.objectID}>
           <div className="card-header">
             <div className="info"><img src="/img/clock.svg" alt="Time" /> {timeDiff} hour{timeDiff === 1 ? '' : 's'} ago by {props.news.author}</div>
             <h3>{props.news.story_title}</h3>

@@ -5,7 +5,8 @@ import './App.css';
 export default function App() {
 
   //Settings de states
-  const [category, setCategory] = useState('angular') // Category
+  let n = 1;
+  const [category, setCategory] = useState(localStorage.getItem('category') || 'angular'); // Category
   const [page, setPage] = useState(0) // Current page number
   const [error, setError] = useState() // Error on fetching
   const [firstLoad, setFirstLoad] = useState(true) // Check first load for future pagination
@@ -35,8 +36,15 @@ export default function App() {
 
   // Handling category change from select
   const handleChange = (value) => {
+    localStorage.setItem('category', value);
     setCategory(value);
     fetchData(value, 0, false);
+  }
+
+  const setDefaultCategory = value => {
+    const option = document.querySelector(`select[name=language] option[value="${value}"]`); //
+    option.selected = true;
+    option.defaultSelected = true;
   }
 
   // loading next pages
@@ -46,40 +54,20 @@ export default function App() {
     document.querySelector('.all').click();
   }
 
-  const toggleFav = id => {
-    let favs = JSON.parse(localStorage.getItem('favs')) || []
-    if(favs.find(value => value === id)){
-      favs = favs.filter(function(item) {
-        return item !== id
-      })
-      localStorage.setItem('favs', JSON.stringify(favs));
-    } else {
-      favs.push(id);
-      localStorage.setItem('favs', JSON.stringify(favs));
-    }
-  }
-
-
-  // const setFavs = () => {
-  //   let favs = JSON.parse(localStorage.getItem('favs')) || []
-  //   //console.log(favs)
-  //   favs.forEach(element => {
-  //     document.querySelector('#card-' + element).classList.add('fav');
-  //   });
-  // }
-
   //Data fetching, checking if is new data or for appending it
-  const fetchData = (subject, page, append) => {
+  const fetchData = async (subject, page, append) => {
     fetch(`https://hn.algolia.com/api/v1/search_by_date?query=${subject}&page=${page}`) //
       .then((response) => response.json())
-      .then((data) => {
+      .then(async (data) => {
           const hits = data.hits;
           let tempObject = [];
           append
           ? tempObject = [...pages, hits]
           : tempObject = [hits];
           setPages(tempObject);
-          // setFavs();
+          if(!append) {
+            setDefaultCategory(subject)
+          }
       })
       .catch(error => {
         setError(error);
@@ -92,13 +80,23 @@ export default function App() {
       nextPage();
     }
   };
-
+  
   //Handling first load
   useEffect(() => {
     if(!firstLoad) return
-    fetchData('angular', 0, false);
+    fetch(`https://hn.algolia.com/api/v1/search_by_date?query=angular&page=1`)
+      .then((response) => response.json())
+      .then(async (data) => {
+          const hits = data.hits;
+          let tempObject = [];
+          tempObject = [hits];
+          setPages(tempObject);
+          setDefaultCategory('angular')
+      })
+      .catch(error => {
+        setError(error);
+      })
     setFirstLoad(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firstLoad])
 
   if(firstLoad) return <h1>Loading...</h1>
@@ -126,7 +124,7 @@ export default function App() {
       </section>
 
       <section id="news">
-        {pages.map(data => <Page news={data} toggleFav={toggleFav}/>)}
+        {pages && pages.map(data => <Page news={data} key={n++}/>)}
       </section>
 
     </main>
