@@ -57,7 +57,7 @@ export default function App() {
       .then(async (data) => {
           const hits = data.hits;
           let tempObject = [];
-          append
+          append //Check if we are adding new pages or is the first load
           ? tempObject = [...pages, hits]
           : tempObject = [hits];
           setPages(tempObject);
@@ -69,7 +69,7 @@ export default function App() {
 
   // Infinte load scroll
   window.onscroll = function() {
-    const offset = 200;
+    const offset = 100;
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - offset) {
       nextPage();
     }

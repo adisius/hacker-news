@@ -11,7 +11,7 @@ export default function Select(props){
 
         const label = document.querySelector('.selected')
         const options = Array.from(document.querySelectorAll('.select .option'))
-    
+        
         options.forEach((option) => {
             const category = option.getAttribute("data-category");
             console.count(category)
@@ -24,7 +24,6 @@ export default function Select(props){
         document.addEventListener('click', (e) => {
             const toggle = document.querySelector('.dropdown.switch')
             const element = e.target
-    
             if (element === toggle) return;
     
             const isDropdownChild = element.closest('.filter')		
@@ -40,11 +39,6 @@ export default function Select(props){
 
     return(
     <>
-        {/* <select name="language" id="language-select" onChange={e => props.handleChange(e.target.value)} hidden>
-          <option value="angular">Angular</option>
-          <option value="reactjs">React</option>
-          <option value="vuejs">Vuejs</option>
-        </select> */}
 
         <div className="dropdown">
             <input type="checkbox" className="dropdown switch" id="filter-switch" hidden />
