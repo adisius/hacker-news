@@ -1,5 +1,6 @@
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import Page from './Components/Page';
+import Select from './Components/Select';
 import './App.css';
 
 export default function App() {
@@ -9,7 +10,6 @@ export default function App() {
   const [category, setCategory] = useState(localStorage.getItem('category') || 'angular'); // Category
   const [page, setPage] = useState(0) // Current page number
   const [error, setError] = useState() // Error on fetching
-  const [firstLoad, setFirstLoad] = useState(true) // Check first load for future pagination
   const [pages, setPages] = useState([]) // For storing pages news data
 
   // Filter buttons
@@ -39,16 +39,12 @@ export default function App() {
     localStorage.setItem('category', value);
     setCategory(value);
     fetchData(value, 0, false);
-  }
-
-  const setDefaultCategory = value => {
-    const option = document.querySelector(`select[name=language] option[value="${value}"]`); //
-    option.selected = true;
-    option.defaultSelected = true;
+    handleTabAll();
   }
 
   // loading next pages
   const nextPage = () => {
+    console.log('fetching new page...')
     fetchData(category, page + 1, true);
     setPage(page + 1);
     document.querySelector('.all').click();
@@ -65,9 +61,6 @@ export default function App() {
           ? tempObject = [...pages, hits]
           : tempObject = [hits];
           setPages(tempObject);
-          if(!append) {
-            setDefaultCategory(subject)
-          }
       })
       .catch(error => {
         setError(error);
@@ -76,30 +69,12 @@ export default function App() {
 
   // Infinte load scroll
   window.onscroll = function() {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+    const offset = 200;
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - offset) {
       nextPage();
     }
   };
   
-  //Handling first load
-  useEffect(() => {
-    if(!firstLoad) return
-    fetch(`https://hn.algolia.com/api/v1/search_by_date?query=angular&page=1`)
-      .then((response) => response.json())
-      .then(async (data) => {
-          const hits = data.hits;
-          let tempObject = [];
-          tempObject = [hits];
-          setPages(tempObject);
-          setDefaultCategory('angular')
-      })
-      .catch(error => {
-        setError(error);
-      })
-    setFirstLoad(false);
-  }, [firstLoad])
-
-  if(firstLoad) return <h1>Loading...</h1>
   if(error) return <h2>Error...</h2>
 
   return (
@@ -116,11 +91,7 @@ export default function App() {
       </section>
 
       <section id="selector">
-        <select name="language" id="language-select" onChange={e => handleChange(e.target.value)}>
-          <option value="angular">Angular</option>
-          <option value="reactjs">React</option>
-          <option value="vuejs">Vuejs</option>
-        </select>
+        <Select handleChange={handleChange}/>
       </section>
 
       <section id="news">
