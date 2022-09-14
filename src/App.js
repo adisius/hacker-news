@@ -6,7 +6,8 @@ export default function App() {
 
   //Settings de states
   let n = 1;
-  const [category, setCategory] = useState(localStorage.getItem('category') || 'angular'); // Category
+  const [isLoading, setIsLoading] = useState(true);
+  const [category, setCategory] = useState(localStorage.getItem('category') || ''); // Category
   const [page, setPage] = useState(0) // Current page number
   const [error, setError] = useState() // Error on fetching
   const [firstLoad, setFirstLoad] = useState(true) // Check first load for future pagination
@@ -39,12 +40,15 @@ export default function App() {
     localStorage.setItem('category', value);
     setCategory(value);
     fetchData(value, 0, false);
+<<<<<<< Updated upstream
   }
 
   const setDefaultCategory = value => {
     const option = document.querySelector(`select[name=language] option[value="${value}"]`); //
     option.selected = true;
     option.defaultSelected = true;
+=======
+>>>>>>> Stashed changes
   }
 
   // loading next pages
@@ -55,7 +59,8 @@ export default function App() {
   }
 
   //Data fetching, checking if is new data or for appending it
-  const fetchData = async (subject, page, append) => {
+  const fetchData = (subject, page, append) => {
+    setIsLoading(true)
     fetch(`https://hn.algolia.com/api/v1/search_by_date?query=${subject}&page=${page}`) //
       .then((response) => response.json())
       .then(async (data) => {
@@ -65,9 +70,13 @@ export default function App() {
           ? tempObject = [...pages, hits]
           : tempObject = [hits];
           setPages(tempObject);
+<<<<<<< Updated upstream
           if(!append) {
             setDefaultCategory(subject)
           }
+=======
+          setIsLoading(false)
+>>>>>>> Stashed changes
       })
       .catch(error => {
         setError(error);
@@ -76,22 +85,44 @@ export default function App() {
 
   // Infinte load scroll
   window.onscroll = function() {
+<<<<<<< Updated upstream
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+=======
+    const offset = 100;
+    if ( !isLoading && (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - offset) ) {
+>>>>>>> Stashed changes
       nextPage();
     }
   };
   
   //Handling first load
   useEffect(() => {
+<<<<<<< Updated upstream
     if(!firstLoad) return
     fetch(`https://hn.algolia.com/api/v1/search_by_date?query=angular&page=1`)
       .then((response) => response.json())
       .then(async (data) => {
+=======
+    const firstCategory = localStorage.getItem('category');
+
+    if(!firstLoad || !firstCategory) return
+
+    setIsLoading(true)
+
+    fetch(`https://hn.algolia.com/api/v1/search_by_date?query=${firstCategory}&page=0`) //
+      .then((response) => response.json())
+      .then( data => {
+>>>>>>> Stashed changes
           const hits = data.hits;
           let tempObject = [];
           tempObject = [hits];
           setPages(tempObject);
+<<<<<<< Updated upstream
           setDefaultCategory('angular')
+=======
+          setIsLoading(false)
+
+>>>>>>> Stashed changes
       })
       .catch(error => {
         setError(error);
@@ -99,7 +130,11 @@ export default function App() {
     setFirstLoad(false);
   }, [firstLoad])
 
+<<<<<<< Updated upstream
   if(firstLoad) return <h1>Loading...</h1>
+=======
+  // if(firstLoad) return <h1>Loading...</h1>
+>>>>>>> Stashed changes
   if(error) return <h2>Error...</h2>
 
   return (
@@ -116,11 +151,15 @@ export default function App() {
       </section>
 
       <section id="selector">
+<<<<<<< Updated upstream
         <select name="language" id="language-select" onChange={e => handleChange(e.target.value)}>
           <option value="angular">Angular</option>
           <option value="reactjs">React</option>
           <option value="vuejs">Vuejs</option>
         </select>
+=======
+        <Select handleChange={handleChange} category={category}/>
+>>>>>>> Stashed changes
       </section>
 
       <section id="news">
